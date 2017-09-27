@@ -55,12 +55,12 @@ void AMyBlueCharacter::CalcMotionCap()
 		if (component->GetName().Equals("Scene"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			scenePos = temp->GetComponentTransform();
+			scenePos = temp->GetRelativeTransform();
 		}
 		else if (component->GetName().Equals("HipTracker"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Hip = temp->GetRelativeTransform();
+			Hip = temp->GetRelativeTransform().Inverse();
 						//Hip = temp->GetComponentTransform();
 							//FQuat rotation = Hip.GetRotation();
 							//FRotator theRot = rotation.Rotator();
@@ -87,6 +87,9 @@ void AMyBlueCharacter::CalcMotionCap()
 			RHandTrack = temp->GetRelativeTransform();
 		}
 	}
+
+	
+
 	Spine; // .SetComponents(FQuat Rotation, FVector Translation, FVector Scale)
 	Spine1;
 	Spine2;
