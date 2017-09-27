@@ -60,34 +60,42 @@ void AMyBlueCharacter::CalcMotionCap()
 		else if (component->GetName().Equals("HipTracker"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Hip = temp->GetRelativeTransform().Inverse();
-						//Hip = temp->GetComponentTransform();
-							//FQuat rotation = Hip.GetRotation();
-							//FRotator theRot = rotation.Rotator();
-							//theRot.Roll = theRot.Roll +90;
-							//FQuat res(theRot);
-							//Hip.SetRotation(res);
+			Hip =  temp->GetComponentToWorld();
+			/*FQuat rotation = Hip.GetRotation();
+			FRotator theRot = rotation.Rotator();
+			theRot.Roll += +90;
+			FQuat res(theRot);
+			Hip.SetRotation(res);*/
+
+			/*FVector pos = Hip.GetLocation();
+			pos[0] -= 15;
+			Hip.SetLocation(pos);*/
 		}
 		else if (component->GetName().Equals("Camera"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Head = temp->GetRelativeTransform();
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("HELLO, Creating Head!"));
+			Head = temp->GetComponentToWorld();
+
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Head.ToString());
 		}
 		else if (component->GetName().Equals("MotionController_l"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			LHandTrack = temp->GetRelativeTransform();
+			LHandTrack = temp->GetComponentToWorld();
+
+
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("HELLO, Creating Left Hand!"));
 
 		}
 		else if (component->GetName().Equals("MotionController_r"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			RHandTrack = temp->GetRelativeTransform();
+			RHandTrack = temp->GetComponentToWorld();
+
+
 		}
 	}
-
+	
 	
 
 	Spine; // .SetComponents(FQuat Rotation, FVector Translation, FVector Scale)
