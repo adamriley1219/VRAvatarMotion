@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <iostream>
+#include <fstream>
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "MyBlueCharacter.generated.h"

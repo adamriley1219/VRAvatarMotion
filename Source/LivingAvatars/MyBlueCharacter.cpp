@@ -55,15 +55,16 @@ void AMyBlueCharacter::CalcMotionCap()
 		if (component->GetName().Equals("Scene"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			scenePos = temp->GetRelativeTransform();
+			scenePos = temp->GetComponentToWorld();
 		}
 		else if (component->GetName().Equals("HipTracker"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Hip =  temp->GetComponentToWorld();
+			Hip = temp->GetComponentToWorld();
+
 			/*FQuat rotation = Hip.GetRotation();
 			FRotator theRot = rotation.Rotator();
-			theRot.Roll += +90;
+			theRot.Roll += 90;
 			FQuat res(theRot);
 			Hip.SetRotation(res);*/
 
@@ -76,6 +77,33 @@ void AMyBlueCharacter::CalcMotionCap()
 			USceneComponent* temp = (USceneComponent*)component;
 			Head = temp->GetComponentToWorld();
 
+		//	FQuat rotation = Head.GetRotation();
+		//	FVector location = Head.GetLocation();
+		//	FRotator theRot = rotation.Rotator();
+		//	theRot.Roll += 90;
+		//	FQuat res(theRot);
+		//	Head.SetRotation(res);
+
+		/*	float Xa = rotation.X;
+			float Ya = rotation.Y;
+			float Za = rotation.Z;
+
+			rotation.X = -Za;
+			rotation.Y = -Ya;
+			rotation.Z = Xa;
+
+		*///	FRotator theRot = rotation.Rotator();
+
+		//	location.X = 5;
+		//	location.Y = 5;
+		//	location.Z = 5;
+
+
+			//theRot.Yaw += -90;
+			//theRot.Pitch += 90;
+			//theRot.Roll += 90;
+		//	Head.SetRotation(FQuat(theRot));
+		//	Head.SetLocation(location);
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Head.ToString());
 		}
 		else if (component->GetName().Equals("MotionController_l"))
@@ -96,7 +124,16 @@ void AMyBlueCharacter::CalcMotionCap()
 		}
 	}
 	
-	
+
+	std::ofstream outFile;
+
+	outFile.open("../../../../../../Users/adamr/Desktop/test.txt");
+	outFile << "Hello World!!!" << std::endl
+		<< "Hip:  " << TCHAR_TO_UTF8(*Hip.ToString()) << std::endl
+		<< "Head:  " << TCHAR_TO_UTF8(*Head.ToString()) << std::endl
+		<< "LeftHand:  " << TCHAR_TO_UTF8(*LHandTrack.ToString()) << std::endl
+		<< "RightHand:  " << TCHAR_TO_UTF8(*RHandTrack.ToString()) << std::endl;
+	outFile.close();
 
 	Spine; // .SetComponents(FQuat Rotation, FVector Translation, FVector Scale)
 	Spine1;
