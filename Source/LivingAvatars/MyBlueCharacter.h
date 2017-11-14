@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "CoreMinimal.h"
+#include "Engine.h"
 #include "GameFramework/Character.h"
 #include "MyBlueCharacter.generated.h"
 

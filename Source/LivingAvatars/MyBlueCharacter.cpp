@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyBlueCharacter.h"
-#include "Engine.h"
 
 
 // Sets default values
@@ -55,12 +54,12 @@ void AMyBlueCharacter::CalcMotionCap()
 		if (component->GetName().Equals("Scene"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			scenePos = temp->GetComponentToWorld();
+			scenePos = temp->GetComponentTransform();
 		}
 		else if (component->GetName().Equals("HipTracker"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Hip = temp->GetComponentToWorld();
+			Hip = temp->GetComponentTransform();
 
 			/*FQuat rotation = Hip.GetRotation();
 			FRotator theRot = rotation.Rotator();
@@ -75,7 +74,7 @@ void AMyBlueCharacter::CalcMotionCap()
 		else if (component->GetName().Equals("Camera"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			Head = temp->GetComponentToWorld();
+			Head = temp->GetComponentTransform();
 
 		//	FQuat rotation = Head.GetRotation();
 		//	FVector location = Head.GetLocation();
@@ -109,7 +108,7 @@ void AMyBlueCharacter::CalcMotionCap()
 		else if (component->GetName().Equals("MotionController_l"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			LHandTrack = temp->GetComponentToWorld();
+			LHandTrack = temp->GetComponentTransform();
 
 
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("HELLO, Creating Left Hand!"));
@@ -118,7 +117,7 @@ void AMyBlueCharacter::CalcMotionCap()
 		else if (component->GetName().Equals("MotionController_r"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
-			RHandTrack = temp->GetComponentToWorld();
+			RHandTrack = temp->GetComponentTransform();
 
 
 		}
@@ -129,10 +128,11 @@ void AMyBlueCharacter::CalcMotionCap()
 
 	outFile.open("../../../../../../Users/adamr/Desktop/test.txt");
 	outFile << "Hello World!!!" << std::endl
-		<< "Hip:  " << TCHAR_TO_UTF8(*Hip.ToString()) << std::endl
-		<< "Head:  " << TCHAR_TO_UTF8(*Head.ToString()) << std::endl
-		<< "LeftHand:  " << TCHAR_TO_UTF8(*LHandTrack.ToString()) << std::endl
-		<< "RightHand:  " << TCHAR_TO_UTF8(*RHandTrack.ToString()) << std::endl;
+		<< "Hip:				" << TCHAR_TO_UTF8(*Hip.ToString()) << std::endl
+		<< "Head:				" << TCHAR_TO_UTF8(*Head.ToString()) << std::endl
+		<< "LeftHand:			" << TCHAR_TO_UTF8(*LHandTrack.ToString()) << std::endl
+		<< "RightHand:			" << TCHAR_TO_UTF8(*RHandTrack.ToString()) << std::endl
+		<< "Location of Scene:	" << TCHAR_TO_UTF8(*scenePos.ToString()) << std::endl;
 	outFile.close();
 
 	Spine; // .SetComponents(FQuat Rotation, FVector Translation, FVector Scale)
