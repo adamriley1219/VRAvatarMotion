@@ -60,80 +60,45 @@ void AMyBlueCharacter::CalcMotionCap()
 		{
 			USceneComponent* temp = (USceneComponent*)component;
 			Hip = temp->GetComponentTransform();
+			FRotator theRot;
+			theRot.Yaw = 90; // for left hip
+			Hip.SetRotation(Hip.GetRotation()*FQuat(theRot));
 
-			/*FQuat rotation = Hip.GetRotation();
-			FRotator theRot = rotation.Rotator();
-			theRot.Roll += 90;
-			FQuat res(theRot);
-			Hip.SetRotation(res);*/
-
-			/*FVector pos = Hip.GetLocation();
-			pos[0] -= 15;
-			Hip.SetLocation(pos);*/
+			FVector pos = Hip.GetLocation();
+			FVector perp = temp->GetForwardVector();
+			pos[0] -= perp[0] * 18;
+			pos[1] -= perp[1] * 18;
+			pos[2] -= perp[2] * 18;
+			Hip.SetLocation(pos);
 		}
 		else if (component->GetName().Equals("Camera"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
 			Head = temp->GetComponentTransform();
-
-		//	FQuat rotation = Head.GetRotation();
-		//	FVector location = Head.GetLocation();
-		//	FRotator theRot = rotation.Rotator();
-		//	theRot.Roll += 90;
-		//	FQuat res(theRot);
-		//	Head.SetRotation(res);
-
-		/*	float Xa = rotation.X;
-			float Ya = rotation.Y;
-			float Za = rotation.Z;
-
-			rotation.X = -Za;
-			rotation.Y = -Ya;
-			rotation.Z = Xa;
-
-		*///	FRotator theRot = rotation.Rotator();
-
-		//	location.X = 5;
-		//	location.Y = 5;
-		//	location.Z = 5;
-
-
-			//theRot.Yaw += -90;
-			//theRot.Pitch += 90;
-			//theRot.Roll += 90;
-		//	Head.SetRotation(FQuat(theRot));
-		//	Head.SetLocation(location);
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, Head.ToString());
 		}
 		else if (component->GetName().Equals("MotionController_l"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
 			LHandTrack = temp->GetComponentTransform();
-
-
-			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("HELLO, Creating Left Hand!"));
-
 		}
 		else if (component->GetName().Equals("MotionController_r"))
 		{
 			USceneComponent* temp = (USceneComponent*)component;
 			RHandTrack = temp->GetComponentTransform();
-
-
 		}
 	}
 	
-
-	std::ofstream outFile;
-
-	outFile.open("../../../../../../Users/adamr/Desktop/test.txt");
-	outFile << "Hello World!!!" << std::endl
-		<< "Hip:				" << TCHAR_TO_UTF8(*Hip.ToString()) << std::endl
-		<< "Head:				" << TCHAR_TO_UTF8(*Head.ToString()) << std::endl
-		<< "LeftHand:			" << TCHAR_TO_UTF8(*LHandTrack.ToString()) << std::endl
-		<< "RightHand:			" << TCHAR_TO_UTF8(*RHandTrack.ToString()) << std::endl
-		<< "Location of Scene:	" << TCHAR_TO_UTF8(*scenePos.ToString()) << std::endl;
-	outFile.close();
+	//std::ofstream outFile;
+	//outFile.open("../../../../../../Users/adamr/Desktop/test.csv");
+	//outFile << "Frame,Hip Trans X,Hip Trans Y,Hip Trans Z,Hip Rot X,Hip Rot Y,Hip Rot Z,Head Trans X,Head Trans Y,Head Trans Z,Head Rot X,Head Rot Y,Head Rot Z,LeftHand Trans X,LeftHand Trans Y,LeftHand Trans Z,LeftHand Rot X,LeftHand Rot Y,LeftHand Rot Z,RightHand Trans X,RightHand Trans Y,RightHand Trans Z,RightHand Rot X,RightHand Rot Y,RightHand Rot Z,Scene Trans X,Scene Trans Y,Scene Trans Z,Scene Rot X,Scene Rot Y,Scene Rot Z" << std::endl
+	//	<< frameCounter  << "," 
+	//	<< Hip.GetLocation().X << "," << Hip.GetLocation().Y << "," << Hip.GetLocation().Z << "," << Hip.GetRotation().X << "," << Hip.GetRotation().Y << "," << Hip.GetRotation().Z << ","
+	//	<< Head.GetLocation().X << "," << Head.GetLocation().Y << "," << Head.GetLocation().Z << "," << Head.GetRotation().X << "," << Head.GetRotation().Y << "," << Head.GetRotation().Z << ","
+	//	<< LHandTrack.GetLocation().X << "," << LHandTrack.GetLocation().Y << "," << LHandTrack.GetLocation().Z << "," << LHandTrack.GetRotation().X << "," << LHandTrack.GetRotation().Y << "," << LHandTrack.GetRotation().Z << ","
+	//	<< RHandTrack.GetLocation().X << "," << RHandTrack.GetLocation().Y << "," << RHandTrack.GetLocation().Z << "," << RHandTrack.GetRotation().X << "," << RHandTrack.GetRotation().Y << "," << RHandTrack.GetRotation().Z << ","
+	//	<< scenePos.GetLocation().X << "," << scenePos.GetLocation().Y << "," << scenePos.GetLocation().Z << "," << scenePos.GetRotation().X << "," << scenePos.GetRotation().Y << "," << scenePos.GetRotation().Z << std::endl;
+	//	//<< "Location of Scene:	" << TCHAR_TO_UTF8(*scenePos.ToString()) << std::endl;
+	//outFile.close();
 
 	Spine; // .SetComponents(FQuat Rotation, FVector Translation, FVector Scale)
 	Spine1;
@@ -152,3 +117,39 @@ void AMyBlueCharacter::CalcMotionCap()
 	RLeg;
 	RFoot;
 }
+
+void AMyBlueCharacter::TakeSnapshot()
+{
+	if (outFile.is_open())
+	{
+		frameCounter++;
+		outFile
+			<< frameCounter  << "," 
+			<< Hip.GetLocation().X << "," << Hip.GetLocation().Y << "," << Hip.GetLocation().Z << "," << Hip.GetRotation().X << "," << Hip.GetRotation().Y << "," << Hip.GetRotation().Z << ","
+			<< Head.GetLocation().X << "," << Head.GetLocation().Y << "," << Head.GetLocation().Z << "," << Head.GetRotation().X << "," << Head.GetRotation().Y << "," << Head.GetRotation().Z << ","
+			<< LHandTrack.GetLocation().X << "," << LHandTrack.GetLocation().Y << "," << LHandTrack.GetLocation().Z << "," << LHandTrack.GetRotation().X << "," << LHandTrack.GetRotation().Y << "," << LHandTrack.GetRotation().Z << ","
+			<< RHandTrack.GetLocation().X << "," << RHandTrack.GetLocation().Y << "," << RHandTrack.GetLocation().Z << "," << RHandTrack.GetRotation().X << "," << RHandTrack.GetRotation().Y << "," << RHandTrack.GetRotation().Z << ","
+			<< scenePos.GetLocation().X << "," << scenePos.GetLocation().Y << "," << scenePos.GetLocation().Z << "," << scenePos.GetRotation().X << "," << scenePos.GetRotation().Y << "," << scenePos.GetRotation().Z << std::endl;
+	}
+}
+
+void AMyBlueCharacter::StartRecording()
+{
+	if (!outFile.is_open())
+	{
+		frameCounter = 0;
+		scenesCaptured++;
+		std::stringstream ss;
+		ss << "../../../../../../Users/adamr/Desktop/MotionCaptured_" << scenesCaptured << ".csv";
+		outFile.open(ss.str());
+		outFile << "Frame,Hip Trans X,Hip Trans Y,Hip Trans Z,Hip Rot X,Hip Rot Y,Hip Rot Z,Head Trans X,Head Trans Y,Head Trans Z,Head Rot X,Head Rot Y,Head Rot Z,LeftHand Trans X,LeftHand Trans Y,LeftHand Trans Z,LeftHand Rot X,LeftHand Rot Y,LeftHand Rot Z,RightHand Trans X,RightHand Trans Y,RightHand Trans Z,RightHand Rot X,RightHand Rot Y,RightHand Rot Z,Scene Trans X,Scene Trans Y,Scene Trans Z,Scene Rot X,Scene Rot Y,Scene Rot Z" << std::endl;
+	}
+};
+
+void AMyBlueCharacter::EndRecording()
+{
+	if (outFile.is_open())
+	{
+		outFile.close();
+	}
+};

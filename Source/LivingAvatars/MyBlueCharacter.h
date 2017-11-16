@@ -3,6 +3,7 @@
 #pragma once
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include "CoreMinimal.h"
 #include "Engine.h"
@@ -19,6 +20,9 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
+	int frameCounter = 0;
+	int scenesCaptured = 0;
+	std::ofstream outFile;
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
 		FTransform scenePos;
@@ -71,6 +75,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category="isMoving")
 	bool isMoving();
+	UFUNCTION(BlueprintCallable)
+		void StartRecording();
+	UFUNCTION(BlueprintCallable)
+		void EndRecording();
 	void CalcMotionCap();
-	
+	UFUNCTION(BlueprintCallable)
+		void TakeSnapshot();
 };
