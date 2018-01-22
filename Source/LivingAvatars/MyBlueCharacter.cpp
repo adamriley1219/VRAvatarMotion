@@ -24,8 +24,6 @@ void AMyBlueCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	CalcMotionCap();
-	//USkeletalMeshComponent mesh = Actor->FindComponentByClass<USkeletalMeshComponent>();
-
 }
 
 // Called to bind functionality to input
@@ -60,15 +58,17 @@ void AMyBlueCharacter::CalcMotionCap()
 		{
 			USceneComponent* temp = (USceneComponent*)component;
 			Hip = temp->GetComponentTransform();
+			FVector pos = Hip.GetLocation();
+			FVector perp = temp->GetForwardVector();
+
 			FRotator theRot;
 			theRot.Yaw = 90; // for left hip
 			Hip.SetRotation(Hip.GetRotation()*FQuat(theRot));
 
-			FVector pos = Hip.GetLocation();
-			FVector perp = temp->GetForwardVector();
-			pos[0] -= perp[0] * 18;
-			pos[1] -= perp[1] * 18;
-			pos[2] -= perp[2] * 18;
+			float offset = 18;
+			pos[0] -= perp[0] * offset;
+			pos[1] -= perp[1] * offset;
+			pos[2] -= perp[2] * offset;
 			Hip.SetLocation(pos);
 		}
 		else if (component->GetName().Equals("Camera"))
@@ -140,7 +140,7 @@ void AMyBlueCharacter::StartRecording()
 		frameCounter = 0;
 		scenesCaptured++;
 		std::stringstream ss;
-		ss << "../../../../../../Users/adamr/Desktop/MotionCaptured_" << scenesCaptured << ".csv";
+		ss << "../../../../../../Users/adamr/Desktop/MoCap/MotionCaptured_" << scenesCaptured << ".csv";
 		outFile.open(ss.str());
 		outFile << "Frame,Hip Trans X,Hip Trans Y,Hip Trans Z,Hip Rot X,Hip Rot Y,Hip Rot Z,Head Trans X,Head Trans Y,Head Trans Z,Head Rot X,Head Rot Y,Head Rot Z,LeftHand Trans X,LeftHand Trans Y,LeftHand Trans Z,LeftHand Rot X,LeftHand Rot Y,LeftHand Rot Z,RightHand Trans X,RightHand Trans Y,RightHand Trans Z,RightHand Rot X,RightHand Rot Y,RightHand Rot Z,Scene Trans X,Scene Trans Y,Scene Trans Z,Scene Rot X,Scene Rot Y,Scene Rot Z" << std::endl;
 	}
