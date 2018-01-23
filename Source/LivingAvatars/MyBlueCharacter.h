@@ -23,6 +23,7 @@ protected:
 	int frameCounter = 0;
 	int scenesCaptured = 0;
 	std::ofstream outFile;
+	FTimerHandle TimerHandle;
 	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
 		FTransform scenePos;
@@ -66,6 +67,8 @@ protected:
 		 FTransform RLeg;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
 		 FTransform RFoot;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MoCapInfo)
+		bool Recording;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

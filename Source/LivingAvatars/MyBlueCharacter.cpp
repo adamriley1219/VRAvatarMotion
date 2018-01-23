@@ -120,6 +120,7 @@ void AMyBlueCharacter::CalcMotionCap()
 
 void AMyBlueCharacter::TakeSnapshot()
 {
+	
 	if (outFile.is_open())
 	{
 		frameCounter++;
@@ -130,11 +131,13 @@ void AMyBlueCharacter::TakeSnapshot()
 			<< LHandTrack.GetLocation().X << "," << LHandTrack.GetLocation().Y << "," << LHandTrack.GetLocation().Z << "," << LHandTrack.GetRotation().X << "," << LHandTrack.GetRotation().Y << "," << LHandTrack.GetRotation().Z << ","
 			<< RHandTrack.GetLocation().X << "," << RHandTrack.GetLocation().Y << "," << RHandTrack.GetLocation().Z << "," << RHandTrack.GetRotation().X << "," << RHandTrack.GetRotation().Y << "," << RHandTrack.GetRotation().Z << ","
 			<< scenePos.GetLocation().X << "," << scenePos.GetLocation().Y << "," << scenePos.GetLocation().Z << "," << scenePos.GetRotation().X << "," << scenePos.GetRotation().Y << "," << scenePos.GetRotation().Z << std::endl;
+		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, TEXT("SnapTaken"));
 	}
 }
 
 void AMyBlueCharacter::StartRecording()
 {
+	
 	if (!outFile.is_open())
 	{
 		frameCounter = 0;
@@ -144,10 +147,17 @@ void AMyBlueCharacter::StartRecording()
 		outFile.open(ss.str());
 		outFile << "Frame,Hip Trans X,Hip Trans Y,Hip Trans Z,Hip Rot X,Hip Rot Y,Hip Rot Z,Head Trans X,Head Trans Y,Head Trans Z,Head Rot X,Head Rot Y,Head Rot Z,LeftHand Trans X,LeftHand Trans Y,LeftHand Trans Z,LeftHand Rot X,LeftHand Rot Y,LeftHand Rot Z,RightHand Trans X,RightHand Trans Y,RightHand Trans Z,RightHand Rot X,RightHand Rot Y,RightHand Rot Z,Scene Trans X,Scene Trans Y,Scene Trans Z,Scene Rot X,Scene Rot Y,Scene Rot Z" << std::endl;
 	}
+	Recording = true;
+	GetWorldTimerManager().SetTimer(TimerHandle, this, &AMyBlueCharacter::TakeSnapshot, 0.016666f, true, 0.0f);
+
 };
 
 void AMyBlueCharacter::EndRecording()
 {
+	Recording = false;
+	
+	GetWorldTimerManager().ClearTimer(TimerHandle);
+	
 	if (outFile.is_open())
 	{
 		outFile.close();
