@@ -10,6 +10,24 @@
 #include "GameFramework/Character.h"
 #include "MyBlueCharacter.generated.h"
 
+
+
+USTRUCT(BlueprintType)
+struct FPose
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
+		FTransform Head;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
+		FTransform Hip;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
+		FTransform LHand;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MyBlueCharacter)
+		FTransform RHand;
+};
+
+
+
 UCLASS()
 class LIVINGAVATARS_API AMyBlueCharacter : public ACharacter
 {
@@ -69,6 +87,8 @@ protected:
 		 FTransform RFoot;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MoCapInfo)
 		bool Recording;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Setup)
+		FPose pose1;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
