@@ -13,5 +13,11 @@
 				"AnimationModifiers"
 			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "OculusVR",
+			"Enabled": false
+		}
 	]
 }
